@@ -1,6 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, userEvent, waitFor } from '@testing-library/react';
 import App from './App';
 import { fetchShow as mockFetchShow } from './api/fetchShow';
 
@@ -28,6 +27,11 @@ test('renders dropdown menu', async () => {
 	//Assert
 	mockFetchShow.mockResolvedValueOnce(showData);
 	const { getByText, getAllByText } = render(<App />);
+	await waitFor(() => {
+		getByText(/select a season/i);
+	});
+	userEvent.click(getByText(/select a season/i));
+
 	await waitFor(() => {
 		getByText(/season 1/i);
 	});
