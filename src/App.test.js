@@ -5,7 +5,7 @@ import App from './App';
 import { fetchShow as mockFetchShow } from './api/fetchShow';
 
 // mock the fetchMissions function
-jest.mock('./api/fetchShow');
+jest.mock('./api/fetchShows');
 
 const showData = [
 	{
@@ -22,9 +22,15 @@ const showData = [
 	},
 ];
 //async
-test('renders component', async () => {
+test('renders dropdown menu', async () => {
 	//Arrange
 	//Act
 	//Assert
 	mockFetchShow.mockResolvedValueOnce(showData);
+	const { getByText, getAllByText } = render(<App />);
+	await waitFor(() => {
+		getByText(/season 1/i);
+	});
+	expect(getAllByText(/season/i)).toHaveLength(4);
+	expect(mockFetchShow).toHaveBeenCalledTimes(1);
 });
